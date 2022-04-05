@@ -20,7 +20,7 @@ open class RKViewModel : ViewModel,
     // MARK: Properties
     //
 
-    open internal(set) var identity : Int = UUID().hashValue
+    open var identity : Int = UUID().hashValue
 
     open var disposeBag = DisposeBag()
 

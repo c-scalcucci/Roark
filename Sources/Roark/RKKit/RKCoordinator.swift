@@ -23,7 +23,7 @@ open class RKCoordinator<DeepLinkType: DeepLink> : Coordinator<DeepLinkType> {
         super.init(router: router)
     }
 
-    public static func newRouter() -> Router {
+    open class func newRouter() -> Router {
         return Router(RKNavigationController())
     }
 
