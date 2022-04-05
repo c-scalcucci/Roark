@@ -13,7 +13,11 @@ open class RKCoordinator<DeepLinkType: DeepLink> : Coordinator<DeepLinkType> {
 
     open var activeLink : DeepLinkType?
 
-    public var disposeBag = DisposeBag()
+    open private(set) var disposeBag = DisposeBag()
+
+    open func resetDisposeBag() {
+        self.disposeBag = DisposeBag()
+    }
 
     public override init(router: Router = Router(RKNavigationController())) {
         super.init(router: router)

@@ -14,7 +14,7 @@ public protocol RKNavigationControllerDelegate : AnyObject {
 open class RKNavigationController : UINavigationController, UINavigationBarDelegate {
     weak var roarkNavigationDelegate : RKNavigationControllerDelegate?
 
-    public func navigationBar(_ navigationBar: UINavigationBar, shouldPop item: UINavigationItem) -> Bool {
+    open func navigationBar(_ navigationBar: UINavigationBar, shouldPop item: UINavigationItem) -> Bool {
         return roarkNavigationDelegate?.shouldPopController() ?? true
     }
 }

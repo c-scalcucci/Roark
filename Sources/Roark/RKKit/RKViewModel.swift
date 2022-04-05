@@ -10,12 +10,23 @@ import RxSwift
 import RxCocoa
 import Differentiator
 
-open class RKViewModel : ViewModel, IdentifiableType, Equatable, Hashable {
+open class RKViewModel : ViewModel,
+                         IdentifiableType,
+                         Equatable,
+                         Hashable {
     public typealias Identity = Int
 
-    public internal(set) var identity : Int = UUID().hashValue
+    //
+    // MARK: Properties
+    //
 
-    public private(set) var disposeBag = DisposeBag()
+    open internal(set) var identity : Int = UUID().hashValue
+
+    open var disposeBag = DisposeBag()
+
+    //
+    // MARK: Synchronization
+    //
 
     private lazy var operationQueue : OperationQueue = {
         let queue = OperationQueue()
@@ -23,15 +34,7 @@ open class RKViewModel : ViewModel, IdentifiableType, Equatable, Hashable {
         return queue
     }()
 
-    @inlinable public static func ==(lhs: RKViewModel, rhs: RKViewModel) -> Bool {
-        return lhs.identity == rhs.identity
-    }
-
-    public func hash(into hasher: inout Hasher) {
-        hasher.combine(identity)
-    }
-
-    public func setQueueName(_ queueName: String) {
+    open func setQueueName(_ queueName: String) {
         let operation = AsyncOperation { (asyncOperation: @escaping (AsyncOperation.State) -> Void) in
             Thread.current.name = queueName
             asyncOperation(.finished)
@@ -44,11 +47,11 @@ open class RKViewModel : ViewModel, IdentifiableType, Equatable, Hashable {
     // MARK: Updates
     //
 
-    public func cancelAllOperations() {
+    open func cancelAllOperations() {
         operationQueue.cancelAllOperations()
     }
 
-    public func executeInSerialContext(_ asyncCompletion: AsyncCompletion? = nil,
+    open func executeInSerialContext(_ asyncCompletion: AsyncCompletion? = nil,
                                        _ name: String? = nil,
                                        _ execute: @escaping (@escaping AsyncCompletion) -> ()) {
         if let asyncCompletion = asyncCompletion {
@@ -60,5 +63,18 @@ open class RKViewModel : ViewModel, IdentifiableType, Equatable, Hashable {
             operation.name = name ?? "Unknown"
             operationQueue.addOperation(operation)
         }
+    }
+
+    //
+    // MARK: Hashable & Equatable
+    //
+
+    @inlinable
+    public static func ==(lhs: RKViewModel, rhs: RKViewModel) -> Bool {
+        return lhs.identity == rhs.identity
+    }
+
+    open func hash(into hasher: inout Hasher) {
+        hasher.combine(identity)
     }
 }

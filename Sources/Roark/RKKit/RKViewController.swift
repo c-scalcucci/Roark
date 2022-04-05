@@ -16,9 +16,13 @@ open class RKViewController<VM: RKViewModel> : UIViewController,
     // MARK: Life Cycle Properties
     //
 
-    public var viewModel : VM!
+    open var viewModel : VM!
 
-    public private(set) var disposeBag = DisposeBag()
+    open private(set) var disposeBag = DisposeBag()
+
+    open func resetDisposeBag() {
+        self.disposeBag = DisposeBag()
+    }
 
     //
     // MARK: Creation
@@ -32,13 +36,13 @@ open class RKViewController<VM: RKViewModel> : UIViewController,
         preconditionFailure("SocietyViewController.storyboardID() must be overriden.")
     }
 
-    public class func create<T: RKViewController>(vm: VM) -> T {
+    open class func create<T: RKViewController>(vm: VM) -> T {
         let vc = T()
         vc.setModel(vm)
         return vc
     }
 
-    public class func `init`(vm: VM) -> Self {
+    open class func `init`(vm: VM) -> Self {
         let vc = self.instantiateFromStoryboard(
             storyboardName : self.storyboardName(),
             storyboardId   : self.storyboardID())
@@ -47,7 +51,7 @@ open class RKViewController<VM: RKViewModel> : UIViewController,
         return vc
     }
 
-    public func setModel(_ vm: VM) {
+    open func setModel(_ vm: VM) {
         _ = self
         self.viewModel = vm
         setupViews()
@@ -58,7 +62,7 @@ open class RKViewController<VM: RKViewModel> : UIViewController,
     // MARK: LifeCycle
     //
 
-    public func shouldPopController() -> Bool {
+    open func shouldPopController() -> Bool {
         return true
     }
 
@@ -80,11 +84,11 @@ open class RKViewController<VM: RKViewModel> : UIViewController,
     // MARK: Key Bindings
     //
 
-    public var keyCommand = PublishSubject<UIKeyCommand>()
+    open var keyCommand = PublishSubject<UIKeyCommand>()
 
     private var keySelectors = [UIKeyCommand:Selector]()
 
-    public override var canBecomeFirstResponder: Bool {
+    open override var canBecomeFirstResponder: Bool {
         return true
     }
 
@@ -112,10 +116,10 @@ open class RKViewController<VM: RKViewModel> : UIViewController,
         super.removeKeyCommand(interceptedCommand)
     }
 
-    @objc public func emptySelector() {
+    @objc open func emptySelector() {
     }
 
-    @objc public func processKey(_ command: UIKeyCommand) {
+    @objc open func processKey(_ command: UIKeyCommand) {
         self.keyCommand.onNext(command)
 
         if let selector = keySelectors[command] {
@@ -126,7 +130,7 @@ open class RKViewController<VM: RKViewModel> : UIViewController,
 }
 
 extension RKViewController {
-    class func instantiateFromStoryboard(storyboardName: String, storyboardId: String) -> Self {
+    open class func instantiateFromStoryboard(storyboardName: String, storyboardId: String) -> Self {
         return instantiateFromStoryboardHelper(storyboardName: storyboardName, storyboardId: storyboardId)
     }
 

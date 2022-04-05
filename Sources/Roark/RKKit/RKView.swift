@@ -10,7 +10,12 @@ import RxSwift
 import RxCocoa
 
 open class RKView<VM: RKViewModel> : UIView {
-    public private(set) var viewModel : VM? {
+
+    //
+    // MARK: Life Cycle Properties
+    //
+    
+    open private(set) var viewModel : VM? {
         didSet {
             if let _ = viewModel {
                 setupViewBindings()
@@ -20,23 +25,35 @@ open class RKView<VM: RKViewModel> : UIView {
         }
     }
 
-    public private(set) var disposeBag = DisposeBag()
+    open private(set) var disposeBag = DisposeBag()
 
-    public class func create<T: RKView>(vm: VM) -> T {
+    open func resetDisposeBag() {
+        self.disposeBag = DisposeBag()
+    }
+
+    //
+    // MARK: Creation
+    //
+
+    open class func create<T: RKView>(vm: VM) -> T {
         let v = T()
         v.setModel(vm)
         return v
     }
 
-    public func setModel(_ vm: VM) {
+    open func setModel(_ vm: VM) {
         _ = self
         self.viewModel = vm
     }
 
-    public func detachModel() {
+    open func detachModel() {
         _ = self
         self.viewModel = nil
     }
+
+    //
+    // MARK: LifeCycle
+    //
 
     public override init(frame: CGRect) {
         super.init(frame: frame)
@@ -51,6 +68,7 @@ open class RKView<VM: RKViewModel> : UIView {
     }
 
     open func commonInit() {
+
     }
 
     open func setupViewBindings() {
