@@ -11,9 +11,7 @@ import RxCocoa
 import Differentiator
 
 open class RKViewModel : ViewModel,
-                         IdentifiableType,
-                         Equatable,
-                         Hashable {
+                         IdentifiableType {
     public typealias Identity = Int
 
     //
@@ -52,8 +50,8 @@ open class RKViewModel : ViewModel,
     }
 
     open func executeInSerialContext(_ asyncCompletion: AsyncCompletion? = nil,
-                                       _ name: String? = nil,
-                                       _ execute: @escaping (@escaping AsyncCompletion) -> ()) {
+                                     _ name: String? = nil,
+                                     _ execute: @escaping (@escaping AsyncCompletion) -> ()) {
         if let asyncCompletion = asyncCompletion {
             execute(asyncCompletion)
         } else {
@@ -74,7 +72,15 @@ open class RKViewModel : ViewModel,
         return lhs.identity == rhs.identity
     }
 
-    open func hash(into hasher: inout Hasher) {
-        hasher.combine(identity)
+    open override var hash: Int {
+        return identity
+    }
+
+    open override func isEqual(_ object: Any?) -> Bool {
+        if let other = object as? RKViewModel {
+            return self.identity == other.identity
+        } else {
+            return false
+        }
     }
 }

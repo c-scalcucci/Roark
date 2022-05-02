@@ -6,9 +6,9 @@
 
 import Foundation
 
-open class ViewModel {
+open class ViewModel : NSObject {
 
-    public init() {
+    public override init() {
 
     }
 }
