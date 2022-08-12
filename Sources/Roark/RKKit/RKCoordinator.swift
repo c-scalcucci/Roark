@@ -32,6 +32,10 @@ open class RKCoordinator<DeepLinkType: DeepLink> : Coordinator<DeepLinkType> {
     }
 
     open func popToRoot(_ animated: Bool) {
+        // Pop all view controllers off the stack
         self.router.popToRoot(animated: animated)
+
+        // Remove all children
+        Array(self.childCoordinators).forEach({ self.removeChild($0) })
     }
 }
