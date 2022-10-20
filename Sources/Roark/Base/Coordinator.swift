@@ -14,6 +14,7 @@ public protocol Coordinatable: AnyObject {
 
     func start()
     func start(with link: DeepLinkType?)
+    func popToRoot(_ animated: Bool)
 }
 
 public protocol PresentableCoordinatable: Coordinatable, Presentable {}
@@ -32,6 +33,8 @@ open class PresentableCoordinator<DeepLinkType>: NSObject, PresentableCoordinata
     open func presentable() -> UIViewController {
         preconditionFailure("Must override toPresentable()")
     }
+
+    open func popToRoot(_ animated: Bool) {}
 }
 
 open class Coordinator<DeepLinkType>: PresentableCoordinator<DeepLinkType> {
@@ -61,6 +64,17 @@ open class Coordinator<DeepLinkType>: PresentableCoordinator<DeepLinkType> {
     // Make this function open to override it in a different module
     open override func presentable() -> UIViewController {
         return router.presentable()
+    }
+
+    open override func popToRoot(_ animated: Bool) {
+        // Pop all view controllers off the stack
+        self.router.popToRoot(animated: animated)
+
+        // Remove all children
+        Array(self.childCoordinators).forEach({
+            $0.popToRoot(animated)
+            self.removeChild($0)
+        })
     }
 }
 
