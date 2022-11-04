@@ -10,6 +10,9 @@ import RxSwift
 import RxCocoa
 
 open class RKCollectionViewCell<VM: RKCellViewModel> : UICollectionViewCell {
+    class var CellIdentifier : String {
+        return String(describing: self)
+    }
 
     //
     // MARK: Life Cycle Properties
