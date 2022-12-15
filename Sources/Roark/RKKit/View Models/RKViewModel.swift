@@ -6,9 +6,7 @@
 //
 
 import Foundation
-import RxSwift
-import RxCocoa
-import Differentiator
+import Combine
 
 open class RKViewModel : ViewModel,
                          IdentifiableType {
@@ -20,7 +18,7 @@ open class RKViewModel : ViewModel,
 
     open var identity : Int = UUID().hashValue
 
-    open var disposeBag = DisposeBag()
+    open var cancellables = Set<AnyCancellable>()
 
     //
     // MARK: Synchronization
@@ -60,6 +58,13 @@ open class RKViewModel : ViewModel,
             }
             operation.name = name ?? "Unknown"
             operationQueue.addOperation(operation)
+        }
+    }
+
+    open func executeInGlobalContext(qos: DispatchQoS.QoSClass = .default,
+                                     _ fn: @escaping () -> Void) {
+        DispatchQueue.global(qos: qos).async {
+            fn()
         }
     }
 

@@ -6,8 +6,7 @@
 //
 
 import UIKit
-import RxSwift
-import RxCocoa
+import Combine
 
 open class RKView<VM: RKViewModel> : UIView {
 
@@ -20,15 +19,15 @@ open class RKView<VM: RKViewModel> : UIView {
             if let _ = viewModel {
                 setupViewBindings()
             } else {
-                disposeBag = DisposeBag()
+                resetCancellables()
             }
         }
     }
 
-    open private(set) var disposeBag = DisposeBag()
+    open private(set) var cancellables = Set<AnyCancellable>()
 
-    open func resetDisposeBag() {
-        self.disposeBag = DisposeBag()
+    open func resetCancellables() {
+        self.cancellables.removeAll()
     }
 
     //

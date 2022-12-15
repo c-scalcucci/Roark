@@ -6,8 +6,7 @@
 //
 
 import UIKit
-import RxSwift
-import RxCocoa
+import Combine
 
 open class RKTableViewCell<VM: RKCellViewModel> : UITableViewCell {
     class var CellIdentifier : String {
@@ -22,7 +21,7 @@ open class RKTableViewCell<VM: RKCellViewModel> : UITableViewCell {
 
     private var completedInitialSetup : Bool = false
 
-    public var disposeBag = DisposeBag()
+    open var cancellables = Set<AnyCancellable>()
 
     //
     // MARK: Creation
@@ -60,7 +59,7 @@ open class RKTableViewCell<VM: RKCellViewModel> : UITableViewCell {
             }
         } else if vm == nil {
             // Remove all bindings
-            self.disposeBag = DisposeBag()
+            self.cancellables.removeAll()
             self.viewModel = nil
         } else if vm != self.viewModel {
             // Someone forgot to prepare for reuse, we are setting over with a new VM

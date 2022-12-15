@@ -1,14 +1,13 @@
 //
-//  File.swift
+//  RKViewModelSection.swift
 //  
 //
 //  Created by Chris Scalcucci on 11/4/22.
 //
 
 import Foundation
-import Differentiator
 
-public struct RKViewModelSection : AnimatableSectionModelType, Equatable, Hashable {
+public struct RKViewModelSection :  Equatable, Hashable {
     public typealias Item = RKCellViewModel
     public typealias Identity = String
 
@@ -26,7 +25,8 @@ public struct RKViewModelSection : AnimatableSectionModelType, Equatable, Hashab
         self.items = items
     }
 
-    @inlinable public static func ==(lhs: RKViewModelSection, rhs: RKViewModelSection) -> Bool {
+    @inlinable
+    public static func ==(lhs: RKViewModelSection, rhs: RKViewModelSection) -> Bool {
         return lhs.identity == rhs.identity
     }
 

@@ -6,8 +6,7 @@
 //
 
 import UIKit
-import RxSwift
-import RxCocoa
+import Combine
 
 open class RKViewController<VM: RKViewModel> : UIViewController,
                                                RKNavigationControllerDelegate {
@@ -18,10 +17,10 @@ open class RKViewController<VM: RKViewModel> : UIViewController,
 
     open var viewModel : VM!
 
-    open private(set) var disposeBag = DisposeBag()
+    open private(set) var cancellables = Set<AnyCancellable>()
 
-    open func resetDisposeBag() {
-        self.disposeBag = DisposeBag()
+    open func resetCancellables() {
+        self.cancellables.removeAll()
     }
 
     //
@@ -84,7 +83,7 @@ open class RKViewController<VM: RKViewModel> : UIViewController,
     // MARK: Key Bindings
     //
 
-    open var keyCommand = PublishSubject<UIKeyCommand>()
+    open var keyCommand = PassthroughSubject<UIKeyCommand, Never>()
 
     private var keySelectors = [UIKeyCommand:Selector]()
 
@@ -120,7 +119,7 @@ open class RKViewController<VM: RKViewModel> : UIViewController,
     }
 
     @objc open func processKey(_ command: UIKeyCommand) {
-        self.keyCommand.onNext(command)
+        self.keyCommand.send(command)
 
         if let selector = keySelectors[command] {
             perform(selector)
@@ -130,7 +129,7 @@ open class RKViewController<VM: RKViewModel> : UIViewController,
 }
 
 extension RKViewController {
-    open class func instantiateFromStoryboard(storyboardName: String, storyboardId: String) -> Self {
+    public class func instantiateFromStoryboard(storyboardName: String, storyboardId: String) -> Self {
         return instantiateFromStoryboardHelper(storyboardName: storyboardName, storyboardId: storyboardId)
     }
 

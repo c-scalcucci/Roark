@@ -6,8 +6,6 @@
 //
 
 import Foundation
-import RxSwift
-import RxCocoa
 
 open class RKCellViewModel : RKViewModel {
 

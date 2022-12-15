@@ -6,17 +6,16 @@
 //
 
 import UIKit
-import RxSwift
-import RxCocoa
+import Combine
 
 open class RKCoordinator<DeepLinkType: DeepLink> : Coordinator<DeepLinkType> {
 
     open var activeLink : DeepLinkType?
 
-    open private(set) var disposeBag = DisposeBag()
+    open var cancellables = Set<AnyCancellable>()
 
-    open func resetDisposeBag() {
-        self.disposeBag = DisposeBag()
+    open func resetCancellables() {
+        self.cancellables.removeAll()
     }
 
     public override init(router: Router = Router(RKNavigationController())) {
