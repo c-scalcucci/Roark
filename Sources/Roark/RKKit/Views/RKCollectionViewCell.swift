@@ -21,7 +21,7 @@ open class RKCollectionViewCell<VM: RKCellViewModel> : UICollectionViewCell {
 
     private var completedInitialSetup : Bool = false
 
-    open private(set) var cancellables = Set<AnyCancellable>()
+    open var cancellables = Set<AnyCancellable>()
 
     //
     // MARK: Creation

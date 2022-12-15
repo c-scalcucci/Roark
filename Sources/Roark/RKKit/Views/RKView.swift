@@ -24,7 +24,7 @@ open class RKView<VM: RKViewModel> : UIView {
         }
     }
 
-    open private(set) var cancellables = Set<AnyCancellable>()
+    open var cancellables = Set<AnyCancellable>()
 
     open func resetCancellables() {
         self.cancellables.removeAll()

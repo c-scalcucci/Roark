@@ -8,9 +8,7 @@
 import Foundation
 import Combine
 
-open class RKViewModel : ViewModel,
-                         IdentifiableType {
-    public typealias Identity = Int
+open class RKViewModel : ViewModel {
 
     //
     // MARK: Properties

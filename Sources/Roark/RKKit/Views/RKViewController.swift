@@ -17,7 +17,7 @@ open class RKViewController<VM: RKViewModel> : UIViewController,
 
     open var viewModel : VM!
 
-    open private(set) var cancellables = Set<AnyCancellable>()
+    open var cancellables = Set<AnyCancellable>()
 
     open func resetCancellables() {
         self.cancellables.removeAll()
